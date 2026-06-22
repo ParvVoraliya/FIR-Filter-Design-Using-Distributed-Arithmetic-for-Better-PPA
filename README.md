@@ -34,9 +34,7 @@ The filter architecture consists of:
 - Adder
 - Output Register
 
-<p align="center">
-<img src="images/Architecture.png" width="700"/>
-</p>
+![Architecture](images/Architecture.png)
 
 ---
 
@@ -83,42 +81,18 @@ This implementation completely eliminates hardware multipliers.
 
 ---
 
-# 📂 Project Structure
-
-```
-FIR-Filter-Using-Distributed-Arithmetic/
-│
-├── fir_da.v
-├── tb_fir_da.v
-├── README.md
-│
-└── images/
-    ├── architecture.png
-    ├── coefficients.png
-    ├── waveform.png
-    ├── synthesis_report.png
-    └── magnitude_response.png
-```
-
----
-
 # 📈 Simulation Result
 
 The waveform below shows the filtered output generated after processing all input bits using the Distributed Arithmetic architecture.
 
-<p align="center">
-<img src="images/Simulation.png" width="850"/>
-</p>
-
+![Simulation](images/Simulation.png)
 ---
 
 # 📉 Frequency Response
 
 The magnitude response confirms the Low Pass FIR filter characteristics with a flat passband and significant attenuation in the stopband.
 
-<p align="center">
-<img src="images/Filter_Response.png" width="750"/>
-</p>
+![Frequency Response](images/Filter_Response.png)
 
 ---
 
@@ -126,21 +100,9 @@ The magnitude response confirms the Low Pass FIR filter characteristics with a f
 
 The design was successfully synthesized for FPGA implementation.
 
-### Hardware Utilization
+### Synthesis Report
 
-| Resource | Count |
-|----------|------:|
-| ROMs | 4 |
-| 16×13-bit ROM | 4 |
-| Adders/Subtractors | 4 |
-| Registers | 20 |
-| Multiplexers | 16 |
-| Counter | 1 |
-| Logic Shifters | 2 |
-
-<p align="center">
-<img src="images/Synthesis_rpt.png" width="700"/>
-</p>
+![Synthesis Report](images/Synthesis_rpt.png)
 
 ---
 
