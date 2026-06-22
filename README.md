@@ -1,157 +1,168 @@
 # FIR Filter Design Using Distributed Arithmetic (DA)
 
-A hardware-efficient implementation of a **16-tap Low Pass FIR Filter** using **Distributed Arithmetic (DA)** in **Verilog HDL**. The design eliminates multipliers by replacing them with Look-Up Tables (LUTs), shift operations, and accumulation, making it suitable for FPGA and ASIC implementations with reduced hardware complexity.
+A **16-Tap Low Pass FIR Filter** implemented in **Verilog HDL** using the **Distributed Arithmetic (DA)** technique. This design replaces conventional multipliers with Look-Up Tables (LUTs), shift operations, and accumulation, resulting in a hardware-efficient architecture suitable for FPGA implementation.
 
 ---
 
-## 📌 Features
+## 📌 Project Overview
+
+Finite Impulse Response (FIR) filters are widely used in Digital Signal Processing (DSP). Traditional FIR filters require multiple multipliers, which increase hardware complexity and power consumption. Distributed Arithmetic (DA) eliminates these multipliers by using precomputed LUTs, making the implementation more area and power efficient.
+
+This project implements a **16-tap Low Pass FIR Filter** using DA architecture and verifies its functionality through simulation and FPGA synthesis.
+
+---
+
+## ✨ Features
 
 - 16-Tap Low Pass FIR Filter
-- Multiplier-less Distributed Arithmetic architecture
+- Multiplier-less Distributed Arithmetic implementation
 - LUT-based coefficient storage
-- Shift-and-Accumulate computation
+- Shift-and-Accumulate architecture
 - Verilog HDL implementation
-- FPGA synthesizable design
-- Reduced hardware area and power consumption
+- FPGA Synthesizable
+- Efficient hardware utilization
 
 ---
 
-## 🏗️ Architecture
+# 🏗️ Architecture
 
-The proposed architecture consists of:
+The filter architecture consists of:
 
 - 16-stage input shift register
-- Four 16×13-bit ROM LUTs
-- Shift and Accumulate unit
+- Four 16×13-bit LUTs
+- Shift-and-Accumulate unit
 - Adder
-- Output register
+- Output Register
 
-The input samples are serially processed bit-by-bit. Instead of performing multiplication, LUTs generate precomputed partial sums which are shifted and accumulated to produce the final filter output.
+<p align="center">
+<img src="images/Architecture.png" width="700"/>
+</p>
 
 ---
 
-## 📊 Filter Specifications
+# ⚙️ Working Principle
+
+1. Input samples are loaded into a 16-stage shift register.
+2. One bit from each sample is processed during every clock cycle.
+3. These bits generate LUT addresses.
+4. LUTs output precomputed partial sums.
+5. Partial sums are shifted according to the current bit position.
+6. The accumulator adds shifted values.
+7. After processing all 10 input bits, the filtered output is obtained.
+
+This implementation completely eliminates hardware multipliers.
+
+---
+
+# 📊 Filter Specifications
 
 | Parameter | Value |
 |-----------|-------|
 | Filter Type | Low Pass FIR |
 | Filter Order | 16 |
-| Input Width | 10 bits |
-| Output Width | 22 bits |
-| LUT Size | 16 × 13 bits |
+| Input Width | 10-bit |
+| Output Width | 22-bit |
 | Architecture | Distributed Arithmetic |
+| LUT Size | 16 × 13-bit |
 | HDL | Verilog |
 
 ---
 
-## 📑 Filter Coefficients
+# 📑 Filter Coefficients
 
-| Tap | Coefficient |
-|-----|-------------|
-| h(0) | 0.0328 |
-| h(1) | 0.0816 |
-| h(2) | -0.0065 |
-| h(3) | -0.0047 |
-| h(4) | 0.0847 |
-| h(5) | -0.0694 |
-| h(6) | -0.0550 |
-| h(7) | 0.5763 |
-| h(8) | 0.5763 |
-| h(9) | -0.0550 |
-| h(10) | -0.0694 |
-| h(11) | 0.0847 |
-| h(12) | -0.0047 |
-| h(13) | -0.0065 |
-| h(14) | 0.0816 |
-| h(15) | 0.0328 |
+| Tap | Coefficient | Tap | Coefficient |
+|-----|------------|-----|------------|
+| h(0) | 0.0328 | h(8) | 0.5763 |
+| h(1) | 0.0816 | h(9) | -0.0550 |
+| h(2) | -0.0065 | h(10) | -0.0694 |
+| h(3) | -0.0047 | h(11) | 0.0847 |
+| h(4) | 0.0847 | h(12) | -0.0047 |
+| h(5) | -0.0694 | h(13) | -0.0065 |
+| h(6) | -0.0550 | h(14) | 0.0816 |
+| h(7) | 0.5763 | h(15) | 0.0328 |
 
 ---
 
-## ⚙️ Working
-
-1. New input samples are loaded into a 16-stage shift register.
-2. One bit from each stored sample is processed during every clock cycle.
-3. These bits form the address for the LUTs.
-4. The LUTs output precomputed partial sums.
-5. Partial sums are shifted according to the bit position.
-6. The accumulator adds the shifted values.
-7. After processing all 10 bits of the input samples, the final filtered output is generated.
-
----
-
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```
 FIR-Filter-Using-Distributed-Arithmetic/
 │
-├── fir_da.v                # Top module
+├── fir_da.v
+├── tb_fir_da.v
 ├── README.md
-├── architecture.png
-├── waveform.png
-├── synthesis_report.png
-├── magnitude_response.png
-└── coefficients.png
+│
+└── images/
+    ├── architecture.png
+    ├── coefficients.png
+    ├── waveform.png
+    ├── synthesis_report.png
+    └── magnitude_response.png
 ```
 
 ---
 
-## 🛠️ Synthesis Summary
+# 📈 Simulation Result
+
+The waveform below shows the filtered output generated after processing all input bits using the Distributed Arithmetic architecture.
+
+<p align="center">
+<img src="images/Simulation.png" width="850"/>
+</p>
+
+---
+
+# 📉 Frequency Response
+
+The magnitude response confirms the Low Pass FIR filter characteristics with a flat passband and significant attenuation in the stopband.
+
+<p align="center">
+<img src="images/Filter_Response.png" width="750"/>
+</p>
+
+---
+
+# 🛠️ Synthesis Report
+
+The design was successfully synthesized for FPGA implementation.
+
+### Hardware Utilization
 
 | Resource | Count |
 |----------|------:|
 | ROMs | 4 |
 | 16×13-bit ROM | 4 |
-| Adders | 4 |
+| Adders/Subtractors | 4 |
 | Registers | 20 |
 | Multiplexers | 16 |
 | Counter | 1 |
 | Logic Shifters | 2 |
 
----
-
-## 📈 Simulation Result
-
-The waveform verifies the correct operation of the FIR filter. After all input bits are processed, the filtered output is produced through the shift-and-accumulate operation.
+<p align="center">
+<img src="images/Synthesis_rpt.png" width="700"/>
+</p>
 
 ---
 
-## 📉 Frequency Response
-
-The implemented filter exhibits a Low Pass frequency response with good passband characteristics and high stopband attenuation.
-
----
-
-## 💻 Tools Used
-
-- Verilog HDL
-- Xilinx ISE
-- ISim / ModelSim
-- MATLAB (Coefficient generation & Frequency response)
-- Spartan-2E FPGA
-
----
-
-## Advantages
+# 🚀 Advantages
 
 - Eliminates hardware multipliers
-- Reduced logic utilization
-- Lower power consumption
-- Area-efficient implementation
-- FPGA friendly architecture
-- Suitable for fixed coefficient FIR filters
+- Lower silicon area
+- Reduced power consumption
+- FPGA-friendly implementation
+- Efficient LUT utilization
+- Suitable for fixed-coefficient DSP applications
 
 ---
 
-## Future Scope
+# 🧪 Tools Used
 
-- Parameterized filter order
-- Pipelined Distributed Arithmetic architecture
-- Runtime programmable coefficients
-- ASIC implementation
-- High-speed optimized architecture
+- Xilinx ISE Design Suite
+- ModelSim
+- MATLAB
 
 ---
 
-## Conclusion
+# 📌 Conclusion
 
-This project demonstrates a multiplier-less implementation of a 16-tap Low Pass FIR filter using Distributed Arithmetic. By replacing conventional multipliers with LUTs and shift-and-accumulate operations, the design significantly reduces hardware complexity while maintaining filtering accuracy. The architecture is suitable for FPGA implementation and serves as an efficient solution for low-power and area-constrained digital signal processing applications.
+A **16-Tap Low Pass FIR Filter** based on **Distributed Arithmetic (DA)** was successfully designed and implemented in Verilog HDL. The architecture replaces conventional multipliers with LUTs, shift operations, and accumulation, resulting in a hardware-efficient implementation. Simulation and synthesis results verify the correctness of the design while demonstrating reduced hardware complexity, making it suitable for FPGA and low-power DSP applications.
